@@ -9,6 +9,22 @@ patch and verify — with explicit human handoffs when you need them.**
 [Architecture](docs/ARCHITECTURE.md) · [Examples](docs/EXAMPLES.md) ·
 [Validation](VALIDATION.md) · [Contributing](CONTRIBUTING.md)
 
+> [!IMPORTANT]
+> **LAWFUL USE ONLY — YOU ARE RESPONSIBLE FOR HOW YOU USE THIS TOOL.**
+>
+> **Only analyze, test or modify applications when you have the necessary rights
+> or explicit authorization for the intended work. Understand your purpose,
+> the permitted scope and the consequences before you begin.**
+>
+> **Follow applicable law, contracts, privacy requirements and rules governing
+> modification and redistribution. Possessing an APK, calling an activity
+> "research" or using it for education does not by itself grant permission.
+> Authorization for one app does not extend to unrelated accounts, devices,
+> services or data. If your authority or scope is unclear, resolve it first.**
+>
+> **This project does not grant permission to perform unauthorized activities.
+> This notice is not legal advice and does not make unlawful use lawful.**
+
 ## Tested configuration
 
 The implementation has been exercised on the following host. This records the
