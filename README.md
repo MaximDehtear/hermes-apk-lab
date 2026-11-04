@@ -253,7 +253,7 @@ See [instrumentation.md](skills/apk-reverse-engineering/references/instrumentati
 ## Large file transfer
 
 - The server listens on **`0.0.0.0:9099`** by default: all host IPv4 interfaces.
-  Cloudflare, third-party tunnels and Docker are not used.
+  Hosting is direct, without third-party tunnels or Docker.
 - Open `http://HOST_ADDRESS:9099`, not `0.0.0.0`. Without an external address
   configured, the controller uses a host interface address, usually LAN.
 - For internet access, set `public_base_url`, e.g. `http://YOUR_DOMAIN:9099`, in
@@ -428,6 +428,6 @@ python3 -m compileall -q apk_lab scripts
 Tests use temporary directories and do not affect a real phone or user apps.
 Actual installed-version checks are recorded in VALIDATION.md.
 
-Audit and changes dated 2026-11-04: [report](AUDIT-2026-11-04.md).
+Audit and changes dated 2026-11-04: [report](docs/reports/AUDIT-2026-11-04.md).
 
-C/C++, collaborative debugging and memory extension: [report](NATIVE-COLLABORATION.md).
+C/C++, collaborative debugging and memory extension: [report](docs/reports/NATIVE-COLLABORATION.md).

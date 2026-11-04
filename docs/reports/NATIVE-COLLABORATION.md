@@ -1,6 +1,6 @@
 # Native analysis and collaborative debugging — 2026-11-04
 
-The update is implemented in ~/project/hermes-apk-lab and bound to the installed
+The update is implemented in $PROJECT and bound to the installed
 Hermes skill. Analysis and job memory reside in the Hermes workspace.
 
 ## C/C++
@@ -18,7 +18,7 @@ arbitrary libraries from recovered pseudocode is not automated.
 Implementation uses the official
 [Ghidra headless interface](https://github.com/NationalSecurityAgency/ghidra/blob/master/Ghidra/RuntimeScripts/support/analyzeHeadlessREADME.md)
 and [DecompInterface](https://ghidra.re/ghidra_docs/api/ghidra/app/decompiler/DecompInterface.html).
-Detailed guide: [native.md](skills/apk-reverse-engineering/references/native.md).
+Detailed guide: [native.md](../../skills/apk-reverse-engineering/references/native.md).
 
 ## Modes and control handoff
 
@@ -47,7 +47,7 @@ desktop; an active headless AVD is not restarted just for a window. Android view
 and control through the upload browser were not added. A real desktop window was
 not launched during this validation.
 
-Methodology: [collaboration.md](skills/apk-reverse-engineering/references/collaboration.md).
+Methodology: [collaboration.md](../../skills/apk-reverse-engineering/references/collaboration.md).
 
 ## Memory and names for obfuscated code
 
@@ -91,7 +91,7 @@ for a prepared environment, not a promise of injection into any APK on any phone
 The skill explains how to distinguish pre-serialization values, send attempts,
 actual traffic and server responses; how to prepare logging before a difficult
 manual scenario and preserve the app after a ready-state handoff.
-See [instrumentation.md](skills/apk-reverse-engineering/references/instrumentation.md).
+See [instrumentation.md](../../skills/apk-reverse-engineering/references/instrumentation.md).
 
 ## Validation
 
@@ -102,13 +102,13 @@ See [instrumentation.md](skills/apk-reverse-engineering/references/instrumentati
   passed. The Ghidra Java script was compiled/executed by headless Ghidra itself.
 - Real g++ built a test C++ .so. Ghidra recovered Lab::score and a JNI-named wrapper;
   pseudocode contained the original x * 3 + 7 formula. Subsequent selection reused
-  the saved project. [native-validation.json](native-validation.json).
+  the saved project. [native-validation.json](../validation/native-validation.json).
   This is host x86_64 ELF analysis, not Android JNI execution or an ARM runtime test.
 - On a real Android API 34 AVD: handoff blocked a tap, observe preserved the current
   screen, the instrumented APK built/installed and its marker appeared in logcat.
   After marker removal a clean build launched and passed the Before patch ->
   After patch UI comparison with screenshots.
-  [collaboration-validation.json](collaboration-validation.json).
+  [collaboration-validation.json](../validation/collaboration-validation.json).
 - The installer updated the AGENTS.md APK block and existing skill link. doctor
   detects the native decompiler. Transfer server and emulator were stopped afterward.
 
@@ -119,4 +119,4 @@ retain downloadable screenshots.
 
 Pre-change snapshot: .history/20261104-150941-native-collaboration/before.tar.gz.
 The earlier audit documentation remains historical; this file describes the
-subsequent extension. Main user guide: [README.md](README.md).
+subsequent extension. Main user guide: [README.md](../../README.md).

@@ -1,5 +1,9 @@
 # Validation
 
+Historical machine-readable records are in [docs/validation](docs/validation/README.md).
+Published host paths and the private LAN address have been replaced with documented
+placeholders; outcomes and hashes are preserved. Fresh local runs are ignored by Git.
+
 ## Fresh installation review
 
 The previous short instructions assumed an existing Android SDK. Added
@@ -25,18 +29,18 @@ installation was performed; these tests do not prove downloads or host compatibi
 - Skill validator and `node --check` for both Frida templates: passed.
 - `python3 scripts/validate_native.py`: passed with actual g++ and Ghidra 11.4.2.
   Reconstructed C++ function and JNI-named wrapper, matched the arithmetic, reused
-  the saved project. Proof: [native-validation.json](native-validation.json).
+  the saved project. Proof: [native-validation.json](docs/validation/native-validation.json).
   This is static analysis of a host x86_64 ELF, not an Android JNI runtime test.
 - `python3 scripts/validate_emulator.py --output collaboration-validation.json`:
   passed on the actual API 34 AVD. Human turn blocked a mutation; observation
   preserved the current screen; injected marker appeared in logcat; marker removal
   and a clean final build passed the before/after scenario. Emulator stopped.
-  Proof: [collaboration-validation.json](collaboration-validation.json).
+  Proof: [collaboration-validation.json](docs/validation/collaboration-validation.json).
 - Graphical emulator window and live Android Frida hooks were not exercised.
   Native analysis was not validated against every ABI, packer or protection.
   The handoff test used a synthetic ready signal, not an actual human/Telegram run.
 
-See [extension report](NATIVE-COLLABORATION.md) for current capabilities and limits.
+See [extension report](docs/reports/NATIVE-COLLABORATION.md) for current capabilities and limits.
 
 
 ## Current audit: 2026-11-04
@@ -51,19 +55,19 @@ See [extension report](NATIVE-COLLABORATION.md) for current capabilities and lim
 - Skill creator `quick_validate.py`: passed. Installer re-applied the existing
   skill symlink and refreshed only the managed APK block in workspace AGENTS.md.
 - `doctor`: no missing required tools; toolchain remains inside this project,
-  analysis data remains in `/home/user/hermes_workdir/apk-lab`.
+  analysis data remains in `$HERMES_WORKSPACE/apk-lab`.
 - `python3 scripts/validate_toolchain.py --output validation-2026-11-04.json`:
   **passed with real tools**. Recon found the fixture component and both methods;
   xrefs found its exact TextView.setText call with a matching source hash. Built
   and signed baseline/patch, verified signature/alignment/current hash, re-decoded
   the final signed artifact and confirmed the changed label. Original unchanged.
-  Proof: [validation-2026-11-04.json](validation-2026-11-04.json).
+  Proof: [validation-2026-11-04.json](docs/validation/validation-2026-11-04.json).
 - `python3 scripts/validate_emulator.py --output emulator-validation-2026-11-04.json`:
   **passed on the actual managed API 34 AVD**. Baseline and patched APKs passed the
   new integrity gate, installed and launched; UI changed from `Before patch` to
   `After patch`. Captured 1080x2340 PNGs and accepted the scenario evidence.
   Removed only the synthetic fixture app and stopped the emulator afterward.
-  Proof: [emulator-validation-2026-11-04.json](emulator-validation-2026-11-04.json).
+  Proof: [emulator-validation-2026-11-04.json](docs/validation/emulator-validation-2026-11-04.json).
   Validation fixtures/screenshots were temporary; the proof retains PNG hashes
   and observed UI text. Normal user jobs retain their original screenshots.
 - Final service check: managed emulator stopped; transfer service stopped,
@@ -110,7 +114,7 @@ Reproduce with `python3 scripts/validate_toolchain.py --large-upload`.
 
 `transfer-validation.json` records the historical direct server check:
 
-- Bound to `0.0.0.0:9099`, accessed through `http://192.168.0.155:9099` from
+- Bound to `0.0.0.0:9099`, accessed through `http://HOST_LAN_ADDRESS:9099` from
   this host, without any tunnel or proxy service.
 - Uploaded 12,583,171 bytes through the authenticated chunk API; unauthenticated
   access returned HTTP 403. Stopped the temporary service successfully.

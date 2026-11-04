@@ -19,3 +19,7 @@ toolchain/
 *.apkm
 Android/
 workspace/
+
+# Local publishing drafts and generated validation runs
+.local-drafts/
+/*validation*.json

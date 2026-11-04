@@ -3,13 +3,13 @@
   "toolchain": {
     "java": "/usr/bin/java",
     "keytool": "/usr/bin/keytool",
-    "adb": "/home/user/Android/Sdk/platform-tools/adb",
-    "apksigner": "/home/user/Android/Sdk/build-tools/37.0.0/apksigner",
-    "zipalign": "/home/user/Android/Sdk/build-tools/37.0.0/zipalign",
-    "aapt2": "/home/user/Android/Sdk/build-tools/37.0.0/aapt2",
-    "jadx": "/home/user/project/hermes-apk-lab/toolchain/bin/jadx",
-    "apktool": "/home/user/project/hermes-apk-lab/toolchain/bin/apktool",
-    "emulator": "/home/user/Android/Sdk/emulator/emulator"
+    "adb": "$ANDROID_SDK/platform-tools/adb",
+    "apksigner": "$ANDROID_SDK/build-tools/37.0.0/apksigner",
+    "zipalign": "$ANDROID_SDK/build-tools/37.0.0/zipalign",
+    "aapt2": "$ANDROID_SDK/build-tools/37.0.0/aapt2",
+    "jadx": "$PROJECT/toolchain/bin/jadx",
+    "apktool": "$PROJECT/toolchain/bin/apktool",
+    "emulator": "$ANDROID_SDK/emulator/emulator"
   },
   "phone_tested": false,
   "inventory": {
