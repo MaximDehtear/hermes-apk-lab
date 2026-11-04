@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "bind": "0.0.0.0",
+  "local_port": 9099,
+  "tested_origin": "http://192.168.0.155:9099",
+  "external_network_tested": false,
+  "unauthorized_rejected": true,
+  "uploaded_bytes": 12583171,
+  "time": 1792872967.816806
+}

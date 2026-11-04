@@ -1,0 +1,17 @@
+{
+  "time": 1793785001.7729063,
+  "passed": true,
+  "serial": "emulator-5580",
+  "avd": "HermesApkLab_API34",
+  "baseline_launched": true,
+  "patched_launched": true,
+  "before_ui": "APK Lab Test Before patch",
+  "after_ui": "APK Lab Test After patch",
+  "before_png_sha256": "a3a858b921d6b245ad03305a2a450041d157642524340683a09c76224c45f2d6",
+  "after_png_sha256": "47261f17c5215de4c7907fdd831d7e3c645e33c2e66f5f03a6b116955fdbe9b1",
+  "scenario_verdict": "passed",
+  "screenshot_size": [
+    1080,
+    2340
+  ]
+}

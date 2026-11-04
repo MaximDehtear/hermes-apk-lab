@@ -1,0 +1,21 @@
+{
+  "time": 1793798092.7913573,
+  "passed": true,
+  "summary": {
+    "ghidra_version": "11.4.2",
+    "language": "x86:LE:64:default",
+    "image_base": "00100000",
+    "functions": 15,
+    "selected": 2,
+    "decompiled": 2,
+    "selector": "score",
+    "analysis_timed_out": false,
+    "limit": 5,
+    "note": "Reconstructed pseudocode, not original C++ source. Static entry references, not full runtime dispatch."
+  },
+  "library_sha256": "402cad6a4ada96ee9d5b941c2a7cf11bf4cc2c02e4e45658cec847d6b6cc5d65",
+  "cpp_name": "Lab::score",
+  "pseudocode": "\n/* Lab::score(int) */\n\nint Lab::score(int param_1)\n\n{\n  return param_1 * 3 + 7;\n}\n\n",
+  "project_reused": true,
+  "note": "Host x86_64 ELF validates analysis/decompilation only; not an Android runtime/JNI test."
+}

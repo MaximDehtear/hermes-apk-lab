@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+<title id="title">Hermes APK Lab</title><desc id="desc">From APK to evidence. Android reverse engineering with human and agent collaboration.</desc>
+<defs><linearGradient id="bg"><stop stop-color="#101b2d"/><stop offset="1" stop-color="#173c43"/></linearGradient></defs>
+<rect width="1200" height="320" rx="24" fill="url(#bg)"/>
+<g fill="none" stroke="#4ce3c1" opacity=".25"><path d="M800 0v320M880 0v320M960 0v320M1040 0v320M1120 0v320M760 80h440M760 160h440M760 240h440"/></g>
+<text x="64" y="70" fill="#5ce3c4" font-family="sans-serif" font-size="16" letter-spacing="4">ANDROID · REVERSE ENGINEERING · EVIDENCE</text>
+<text x="60" y="150" fill="#ffffff" font-family="sans-serif" font-size="64" font-weight="700">Hermes APK Lab</text>
+<text x="64" y="202" fill="#c1d3df" font-family="sans-serif" font-size="24">From APK to evidence. With you in control.</text>
+<text x="64" y="266" fill="#7fe5d0" font-family="monospace" font-size="17">ANALYZE → TRACE → PATCH → VERIFY</text>
+<g transform="translate(930 86)" fill="none" stroke="#67e7ca" stroke-width="3"><rect width="110" height="150" rx="18"/><path d="M35 15h40M42 132h26M28 60l-13 15 13 15M82 60l13 15-13 15M63 53L47 97"/></g></svg>

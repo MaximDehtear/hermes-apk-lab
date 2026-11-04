@@ -1,0 +1,38 @@
+{
+  "time": 1792785588.1537218,
+  "toolchain": {
+    "java": "/usr/bin/java",
+    "keytool": "/usr/bin/keytool",
+    "adb": "/home/user/Android/Sdk/platform-tools/adb",
+    "apksigner": "/home/user/Android/Sdk/build-tools/37.0.0/apksigner",
+    "zipalign": "/home/user/Android/Sdk/build-tools/37.0.0/zipalign",
+    "aapt2": "/home/user/Android/Sdk/build-tools/37.0.0/aapt2",
+    "jadx": "/home/user/project/hermes-apk-lab/toolchain/bin/jadx",
+    "apktool": "/home/user/project/hermes-apk-lab/toolchain/bin/apktool",
+    "cloudflared": "/usr/local/bin/cloudflared"
+  },
+  "phone_tested": false,
+  "inventory": {
+    "kind": "apk",
+    "package": "dev.hermes.apklabtest",
+    "launch_activity": "dev.hermes.apklabtest.MainActivity",
+    "dex": [
+      "classes.dex"
+    ]
+  },
+  "decompile": {
+    "apktool_ok": true,
+    "jadx_partial": false
+  },
+  "baseline_signature_verified": true,
+  "patch_in_final_dex": true,
+  "patched_signature_verified": true,
+  "alignment_verified": true,
+  "original_unchanged": true,
+  "large_upload": {
+    "bytes": 220203188,
+    "resumed": true,
+    "sha256_matches": true
+  },
+  "passed": true
+}

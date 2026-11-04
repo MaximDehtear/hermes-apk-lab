@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.venv/
+config.local.json
+toolchain/
+*.egg-info/
+.history/
+
+# Local credentials, SDKs and investigation artifacts
+.env
+.env.*
+*.pem
+*.p12
+*.jks
+*.keystore
+*.apk
+*.apks
+*.xapk
+*.apkm
+Android/
+workspace/
