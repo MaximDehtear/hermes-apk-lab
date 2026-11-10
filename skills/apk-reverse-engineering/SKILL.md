@@ -23,6 +23,10 @@ all investigation data belongs in the returned workspace's `apk-lab/projects/<jo
 ## Procedure
 
 1. For a follow-up, use `apk-lab list` and `status JOB` to select the existing job.
+   If a referenced upload is missing, inspect job input hashes, upload metadata and
+   upload_complete events. Use available provenance to resolve the intended APK;
+   ask only if multiple candidates remain ambiguous. Do not select by filename alone
+   or assume an unrelated previous upload is the current target.
    For a new APK, run `apk-lab open --goal "the user's actual objective"
    --format telegram`. Its short output contains the job ID and the **complete**
    upload URL. Copy the entire URL line verbatim into the Telegram reply, from
@@ -45,6 +49,11 @@ all investigation data belongs in the returned workspace's `apk-lab/projects/<jo
    this conversation once upload completes. Tell the user analysis will begin after
    upload. Do not block a foreground tool call waiting for a human. Never forget
    the completion notification: a web server alone does not wake the agent.
+   Verify the background waiter's actual lifecycle in the current Hermes runtime.
+   On resumption check job status before restarting it. Do not automatically add
+   recurring watcher tasks. If scheduling is explicitly requested, ensure a single
+   owner can start analysis and remove the watcher when the upload completes or the
+   job ends; a missing decompile.json is not a concurrency lock.
    If the user has not chosen where to test, ask once in the same Telegram
    conversation: **"Where should the app be tested: on the connected phone, in
    virtual Android, or without testing?"** (ask in the user's language) The answer may arrive while
@@ -102,6 +111,13 @@ all investigation data belongs in the returned workspace's `apk-lab/projects/<jo
    attempted network calls and actual transmission. Diagnostic builds must be
    cleaned and retested before final delivery. Prepare logging before the user
    navigates to a hard step; do not destroy their current state to add probes.
+   For network claims distinguish constructed payloads, attempted requests,
+   observed egress and confirmed receipt. State the observation point and what it
+   proves; encrypted traffic alone does not reveal plaintext. Use
+   [test-harnesses.md](references/test-harnesses.md) when a controlled peer helps.
+   Record and restore only the environment changes made by the harness, and verify
+   the restored configuration and behavior. Traffic silence alone is not rollback
+   evidence. Keep controlled-peer observations separate from production delivery.
    For requested modifications, preserve a baseline, record a patch explanation,
    build/sign/verify, install on the chosen Android target, then replay the same scenario.
    Capture and publish before/after screenshots. Store a scenario evidence JSON.
@@ -135,7 +151,10 @@ all investigation data belongs in the returned workspace's `apk-lab/projects/<jo
   "continue" means `resume JOB`, read saved evidence and continue.
 - `apk-lab server status`; `apk-lab link JOB --format telegram` reopens access
   and rotates its token. Send the newly printed full URL; any previous link
-  stops working after rotation.
+  stops working after rotation. Publish artifacts and finish the report before
+  generating the delivery link. Keep the server running while downloads are needed;
+  stopping it makes the URL unreachable, though stopping alone does not rotate the
+  token. Reopening with `link` rotates the token. Allow idle shutdown after delivery.
 - Defaults: port 9099, 30 minutes idle, 4 hours maximum. Active transfers delay
   shutdown. Idle status polling does not keep the server alive. After input receipt,
   stop the transfer server when no other transfer is needed; reopen for results.
@@ -149,6 +168,9 @@ all investigation data belongs in the returned workspace's `apk-lab/projects/<jo
 
 - Read [analysis.md](references/analysis.md) for architecture mapping, data flow,
   hypotheses, minimal patches and re-decoding the signed artifact.
+- Read [test-harnesses.md](references/test-harnesses.md) when a runtime scenario needs a
+  minimal probe APK (permission grants, Parcelable extras, foreign-app views) or a
+  network test server.
 - Read [advanced.md](references/advanced.md) when encountering native/JNI,
   Unity/IL2CPP, Flutter, React Native, split packages, persistent state or egress.
   Framework detection chooses a route; it does not establish the app's behavior.

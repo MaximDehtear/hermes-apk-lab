@@ -66,6 +66,16 @@ and analysis with provenance; do not pretend they were covered. Managed ABI
 emulation and host analysis are different: Ghidra analyzing ARM code does not
 make an x86_64 emulator capable of running that app.
 
+When an ABI mismatch blocks execution, first seek a compatible device/image and
+check available APK splits. A native stub can isolate a managed-code path only as
+an explicitly labeled diagnostic experiment. Determine the JNI calling convention,
+argument/return types, registration mechanism and required behavior from evidence;
+not all methods use exported Java_* names, and a no-op may invalidate the scenario
+or crash callers. Use an Android-targeting toolchain for the selected ABI and
+inspect dependencies; -nostdlib alone does not establish Android compatibility.
+Keep original libraries intact, record replacement hashes and all assumptions,
+and never present stubbed behavior as evidence that the original native path works.
+
 Native binary patching requires an architecture-specific design, valid instruction
 encoding/relocations and a tested rebuild. There is no universal C++ source-edit
 and recompile pipeline. Use [instrumentation.md](instrumentation.md) for diagnostic

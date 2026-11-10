@@ -22,6 +22,12 @@ For the virtual option, `test-target JOB emulator` starts the project-managed
 Android API 34 x86_64 AVD headlessly by default and selects its ADB serial automatically.
 If the emulator is not installed, run `python3 scripts/setup_emulator.py` in the
 project, then retry. Setup requires KVM, free disk space and Android SDK licenses.
+If KVM access fails, inspect /dev/kvm permissions, current process groups and host
+virtualization support. Group membership changes need a new login/session to affect
+the running process. A temporary administrator-managed ACL is an option where
+appropriate, but can disappear when the device node is recreated; verify access
+from the actual Hermes process. Do not assume a permission change fixes missing
+hardware or nested-virtualization support.
 The AVD data lives under `<Hermes workspace>/apk-lab/.emulator/avd` and persists
 across sessions. `finish JOB` stops the managed VM when no other active job uses
 it. `apk-lab emulator status|stop` handles interrupted or abandoned sessions.
@@ -46,7 +52,13 @@ For temporary logging see [instrumentation.md](instrumentation.md).
    and locate the requested control. Give coordinates in ORIGINAL image pixels.")`.
    The current multimodal Hermes model receives the image natively when supported.
 3. Optionally `apk-lab device hierarchy JOB` for Android nodes/bounds. Custom
-   rendered games/canvases may have no useful accessibility tree.
+   rendered views may have no useful accessibility tree. Parse the saved XML by
+   attribute name, not attribute order. The CLI's summarized node list omits some
+   attributes such as focused; inspect the raw XML when needed.
+   A soft keyboard can cover otherwise valid bounds, and text/key events depend
+   on focus and IME behavior. Verify the focused view and actual field content,
+   dismiss the IME when it obstructs a control, and capture again after input.
+   Do not assume DPAD/ENTER or a tap reached the intended view.
 4. Perform ONE action, e.g.:
    - `apk-lab device action JOB tap 540 1200`
    - `apk-lab device action JOB swipe 500 1500 500 500 400`
@@ -98,19 +110,44 @@ or a quiesced app with matching DB/WAL files; never silently read an incomplete
 copy as current state. Query copies read-only and retain source hashes. Avoid
 exporting unrelated private data in the user-facing report.
 
+For location-dependent experiments, distinguish injected coordinates, provider
+state, delivery to the app and any subsequent transmission. A successful emulator
+console command does not prove the app received the fix. Inspect provider-specific
+state and available app observations; dumpsys formats and counters vary by release.
+If delivery cannot be established, record the analysis as inconclusive rather than
+inferring app behavior from the console response.
+
 Permissions and roles depend on Android version/OEM, policy and user consent.
 Inspect the actual capability/error on the selected device; do not assert all
 Android 10 systems lack `cmd role`. Keep scenarios needing unapproved permission,
 role or account changes inconclusive rather than forcing the environment to pass.
+When an experiment requires permission changes, record the installed package,
+requested permissions and before/after grants. Check whether the permission can be
+granted on that target; runtime grants do not reproduce every legacy permission,
+AppOps, role or background-access behavior.
 
 ## Install a build and compare
 
 `apk-lab device install-test JOB /absolute/builds/r002/patched.apk` installs using
-`adb install -r`, launches and saves a receipt. It never uninstalls an original app.
+`adb install -r`, launches and saves a receipt. It accepts verified builds under
+this job's builds/ directory. Compare a rebuilt baseline (`build JOB --baseline`)
+with the patched build to distinguish rebuild effects from edits, but also preserve
+original-app observations: a resigned baseline may behave differently from the
+original. Matching signing identities can permit in-place updates; verify retained
+state instead of assuming login/preferences survive every app update. This command
+never uninstalls an original app.
 Signing conflicts are returned as blockers. Ask how the user wants to preserve
 their existing app/data before any uninstall — for a game, state plainly that
 uninstall wipes saved progress. The install smoke test is not proof
 that the requested behavior works.
+
+Install restrictions depend on Android release and device policy. For example,
+Android 14 blocks new installs targeting below API 23 and documents a test-only
+ADB bypass; see [Android 14 installation behavior](https://developer.android.com/about/versions/14/behavior-changes-all#minimum-target-api-level).
+Inspect the actual failure and available options. Prefer a compatible disposable
+runtime that preserves the original APK. A changed targetSdk or native stub creates
+a diagnostic variant with different behavior, not an equivalent original-app test.
+Record its hash, changes and limitations; see native.md for ABI constraints.
 
 For split sets see [advanced.md](advanced.md). The automated install-test handles
 a verified standalone build only. A missing-split error needs the complete package
@@ -141,7 +178,20 @@ Create tests/<scenario>.json with:
 
 Register with `apk-lab device evidence JOB /absolute/job/tests/<scenario>.json`.
 Verdicts: passed, failed, inconclusive. A passed result requires an install/launch
-receipt for that signed APK. Screenshots remain downloadable even for failed tests.
+receipt for that signed APK on the same device. Capture with
+`apk-lab device screenshot JOB --label LABEL --build-sha256 SHA`; the evidence
+validator requires its matching metadata and PNG hash. Raw screenshots can still
+be retained as observations, but lack this controller-generated metadata.
+Use absolute paths to avoid ambiguity: evidence JSON must be inside the job,
+finish's report must be under analysis/, and before/after PNGs must be separate
+captures under tests/screenshots/. Relative paths resolve from the invoking
+process's current directory, not automatically from the job.
+Both remember record types require evidence files. An alias also requires symbol,
+label and basis (named/inferred/runtime); a procedure needs name, precondition,
+result (demonstrated/reproduced/failed) and nonempty steps. See collaboration.md.
+If the environment prevents exercising a scenario, record it as inconclusive;
+if an adequately exercised scenario contradicts the expected behavior, record it
+as failed. Screenshots remain downloadable for either result.
 For nonvisual behavior include the relevant runtime trace and explain why the
 screenshot alone is insufficient. Deliver the two original PNGs with the report
 and APK; `[[as_document]]` prevents Telegram image recompression.

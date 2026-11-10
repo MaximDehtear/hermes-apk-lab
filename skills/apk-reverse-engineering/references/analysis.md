@@ -17,6 +17,24 @@ It describes the CURRENT decoded tree; rerun after changes and keep baseline
 reports separately when comparing versions. Implicit exported attributes require
 component/API/targetSdk interpretation; absence is not automatically false.
 
+A missing-framework decode error can require vendor resource packages. Determine
+which framework and firmware version the input expects; do not infer a vendor or
+path from the numeric resource package ID alone. Obtain matching resources from
+an appropriate device or firmware and retain their hashes/provenance in the job.
+Install them with the configured Apktool executable, for example:
+
+```bash
+apktool if /absolute/job/analysis/vendor-framework.apk -p /absolute/job/decoded/framework
+apk-lab decompile JOB
+```
+
+Use the executable reported by doctor if it is not on PATH. The controller retains
+failed decode trees and records successful retries in analysis/decompile.json;
+do not manually mark a partial decode successful. Inspect any partial smali before
+using it and state coverage gaps. If matching resources are unavailable, continue
+with independently usable evidence and record the resource-analysis limitation.
+See [Apktool frameworks](https://apktool.org/wiki/in-depth/frameworks/).
+
 Keep these living documents small enough to resume without reading all sources:
 
 | File | Content |
@@ -60,7 +78,10 @@ JNI and dynamically loaded DEX require separate tracing. No matches does not
 establish absence. `invoke-polymorphic` and `invoke-custom` are not resolved.
 
 JADX variable names and reconstructed control flow can be misleading. Confirm
-branches, constants, exception handlers and call signatures in smali. Trace both
+branches, constants, exception handlers and call signatures in smali. If reflection
+names are encoded, trace the decoder and its call sites to determine the transform,
+input and resulting descriptor. Do not assume a prefix, encoding or target API from
+the string's appearance. Decoding a name alone does not prove invocation. Trace both
 producers and consumers of a value; distinguish a field from its persisted key.
 Check all relevant reads, writes and reset paths, not just the visible getter.
 
@@ -84,7 +105,19 @@ Method counts indicate coverage, not understanding. Name unexamined components.
    Growing .locals changes the physical registers behind pN. Use suitable move
    instructions and a free low register only after checking liveness; do not
    overwrite a live value. Invoke argument encoding and /range have separate
-   constraints. See the [AOSP bytecode specification](https://source.android.com/docs/core/runtime/dalvik-bytecode).
+   constraints: ordinary invoke instructions encode at most five argument words
+   (wide values use two); /range needs a contiguous register interval. Check both
+   the argument count and register index limits. When inserting a
+   guard into an existing branch, keep the instructions that establish the register's
+   type (re-fetch assignments included); a fuzzy patch anchor that drops them leaves a
+   wrong-typed register for the following call. Verify every hand-written invoke
+   descriptor against the platform API: a wrong overload (e.g. a 3-String `Log.d`)
+   compiles but throws NoSuchMethodError at runtime.
+   When gating on a boolean-returning method result, `if-eqz` jumps on FALSE and
+   falls through on TRUE; `if-nez` does the reverse. Select the branch from the
+   observed predicate and intended control flow, not a presumed meaning of TRUE.
+   Walk both outcomes before building; compilation cannot detect an inverted policy.
+   See the [AOSP bytecode specification](https://source.android.com/docs/core/runtime/dalvik-bytecode).
 4. `build JOB` creates a revision with source hashes, patch.diff, signed APK and
    verification.json. zipalign precedes signing; signature and alignment are
    verified. Publish diffs as .patch or .txt. A signing identity change can affect
@@ -97,7 +130,10 @@ Method counts indicate coverage, not understanding. Name unexamined components.
 6. Replay the same scenario before/after on the chosen target. Include the reset
    path that could undo the change: reopen screen, background/foreground, restart,
    refresh or network response as applicable. Cover a neighboring unchanged path
-   and an error/negative case when relevant. Read device.md for evidence capture.
+   and an error/negative case when relevant. For a security gate, test BOTH
+   directions on the final signed build (denied case and the positive control that
+   the intended feature still works) — one direction alone does not prove the
+   branch is correct. Read device.md for evidence capture.
 
 Install-test and finish now reject missing/failed verification or an APK whose
 current hash differs from its build record. This detects accidental modification;
