@@ -156,3 +156,16 @@ Native validation requires g++. Emulator validation installs a synthetic fixture
 on the managed AVD and stops it afterward; run only when that AVD is not needed
 by another task. Real phone access, Telegram notifications and internet reachability
 must each be checked in their actual environment; unit tests do not establish them.
+
+## Optional native research environment
+
+After the core installation, run `python3 scripts/setup_research.py` (Python
+3.11–3.14). Add `--frida` for the Frida Python API. Installation uses a separate
+`toolchain/research` venv, exact wheel hashes and `pip check`; reruns reuse matching
+packages. No Hermes dependencies or settings are replaced. GDB and C/C++ compilers
+are optional system packages (`sudo apt install gdb build-essential`).
+
+Run `apk-lab doctor` to inspect research imports and exact versions. Missing optional
+components do not appear in the core `missing` list. Frida server setup and guest
+compatibility are separate from client readiness. See [research installation,
+commands and limitations](docs/EXPERIMENTS.md).

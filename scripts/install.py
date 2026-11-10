@@ -114,6 +114,11 @@ screenshots live in this Hermes workspace. finish JOB stops it after the final j
 After decompile use recon JOB, then xrefs JOB with exact smali descriptors to trace
 the requested behavior. Use native JOB lib/ABI/name.so --decompile for C/C++.
 Use reversible instrument markers for diagnostics, remove them before final build.
+Run doctor to discover optional native research packages. Read the skill's
+references/experiments.md before host execution, emulation or Frida probes.
+Use experiment JOB SPEC for bounded fresh-process runs with saved observations;
+use experiment-compare and memory-diff for evidence comparisons. A repeatable
+harness is not proof of Android equivalence; validate against original-app controls.
 Cite source paths/methods and runtime evidence; distinguish
 facts, hypotheses and unknowns. Use the skill report template for delivery.
 Resume saved job state; never mark a patch verified merely because it compiled.

@@ -431,3 +431,17 @@ Actual installed-version checks are recorded in VALIDATION.md.
 Audit and changes dated 2026-11-04: [report](docs/reports/AUDIT-2026-11-04.md).
 
 C/C++, collaborative debugging and memory extension: [report](docs/reports/NATIVE-COLLABORATION.md).
+
+## Native experiments
+
+The optional research environment provides Capstone, Unicorn and pyelftools;
+Frida's Python API is a separate option. `doctor` reports versions and missing
+components. Run `python3 scripts/setup_research.py` to install hash-locked wheels
+without changing Hermes' Python environment.
+
+`experiment JOB SPEC` records bounded fresh-process probes, dependency hashes,
+crashes, timeouts, coverage and repeated observations. `experiment-compare` compares
+results, and `memory-diff` compares captured bytes. The bundled native worker offers
+ELF preflight and explicit instruction emulation. These observations remain
+unverified until independently checked against original-app behavior.
+See [the practical guide](docs/EXPERIMENTS.md) and [engineering report](docs/reports/NATIVE-EXPERIMENTS.md).

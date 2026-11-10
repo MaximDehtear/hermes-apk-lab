@@ -51,3 +51,11 @@ maintained in setup scripts; do not change versions without checking compatibili
 Device and work-mode choices belong to each job, not global installation settings.
 Stop the transfer server before changing its settings, then reopen with link JOB.
 The wizard validates field formats; install.py validates the Hermes local backend.
+
+### Optional research interpreter
+
+`research_python` is an absolute executable path to an independently managed Python
+with the versions in `requirements/`. Default: `toolchain/research/bin/python` in
+the checkout. `doctor` probes imports in a subprocess with a timeout and reports
+version mismatches. `setup_research.py` only modifies the default private venv; it
+never repairs an external interpreter. No configuration migration is required.
