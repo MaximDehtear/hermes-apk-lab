@@ -9,7 +9,7 @@ import time
 import zipfile
 from pathlib import Path
 
-from . import collaborative, core, device, emulator, instrumentation, native, pipeline, research, server
+from . import runtime, experiments, collaborative, core, device, emulator, instrumentation, native, pipeline, research, server
 
 
 def delivery_context():
@@ -32,6 +32,23 @@ def parser():
     p = argparse.ArgumentParser(description="Hermes APK Lab: persistent investigations in the Hermes workspace")
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("doctor")
+    rt = sub.add_parser("runtime-attach", help="Bounded Frida attach on the selected device")
+    rt.add_argument("job")
+    rt.add_argument("pid", type=int)
+    rt.add_argument("script", help="Job-relative Frida JavaScript path")
+    rt.add_argument("--seconds", type=int, default=10)
+    exp = sub.add_parser("experiment", help="Run bounded fresh-process probes; see docs/EXPERIMENTS.md")
+    exp.add_argument("job")
+    exp.add_argument("spec")
+    cmp = sub.add_parser("experiment-compare")
+    cmp.add_argument("job")
+    cmp.add_argument("left")
+    cmp.add_argument("right")
+    mem = sub.add_parser("memory-diff")
+    mem.add_argument("job")
+    mem.add_argument("left")
+    mem.add_argument("right")
+    mem.add_argument("--limit", type=int, default=64)
     sub.add_parser("list")
     n = sub.add_parser("new")
     n.add_argument("--goal", required=True)
@@ -253,6 +270,14 @@ def main(argv=None):
             result = instrumentation.inject(a.job, a.method, a.label, a.at, a.line, a.source_sha256)
         elif c == "uninstrument":
             result = instrumentation.remove(a.job, a.marker)
+        elif c == "runtime-attach":
+            result = runtime.attach(a.job, a.pid, a.script, a.seconds)
+        elif c == "experiment":
+            result = experiments.run(a.job, a.spec)
+        elif c == "experiment-compare":
+            result = experiments.compare(a.job, a.left, a.right)
+        elif c == "memory-diff":
+            result = experiments.memory_diff(a.job, a.left, a.right, a.limit)
         elif c == "native":
             result = native.analyze(a.job, a.library, a.decompile, a.function, a.limit)
         elif c == "work-mode":

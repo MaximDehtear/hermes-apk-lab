@@ -186,3 +186,12 @@ application.
 The controller checks artifact consistency, not the truth of the model's verdict.
 A manually supplied screenshot hash does not independently prove which APK was
 installed. Keep install records, focus/activity, observations and timing consistent.
+
+## Native experiment capabilities
+
+For native runtime analysis, repeated probes or memory captures, read
+[experiments.md](references/experiments.md). Run `doctor` to discover available
+packages; choose tools from APK evidence. Use `experiment` for bounded host probes,
+`runtime-attach` for selected-device Frida scripts, and `experiment-compare` /
+`memory-diff` for recorded comparisons. Preserve failures and independently verify
+observations before accepting conclusions.

@@ -18,7 +18,7 @@ def tools():
     sdk = Path(config().get("android_sdk", str(Path.home() / "Android/Sdk")))
     builds = sorted((sdk / "build-tools").glob("*"), key=lambda p: tuple(int(x) for x in re.findall(r"\d+", p.name)))
     result = {}
-    for name in ["java", "keytool", "adb", "apksigner", "zipalign", "aapt2", "jadx", "apktool", "emulator", "analyzeHeadless", "readelf", "nm", "strings", "objdump"]:
+    for name in ["java", "keytool", "adb", "apksigner", "zipalign", "aapt2", "jadx", "apktool", "emulator", "analyzeHeadless", "readelf", "nm", "strings", "objdump", "gdb", "cc"]:
         value = cfg.get(name)
         if not value:
             options = [PROJECT / "toolchain" / "bin" / name]
@@ -34,11 +34,14 @@ def tools():
 
 
 def doctor():
+    from .capabilities import discover
     found = tools()
     required = ["java", "keytool", "jadx", "apktool", "apksigner", "zipalign", "aapt2"]
     return {"project": str(PROJECT), "workspace": config()["workspace"], "data_root": str(root()),
             "tools": found, "missing": [n for n in required if not found[n]],
             "native_decompiler_ready": bool(found["analyzeHeadless"]),
+            "research": discover(),
+            "host_debugger_ready": bool(found["gdb"]),
             "kvm": os.access("/dev/kvm", os.R_OK | os.W_OK),
             "emulator_avd_ready": (root() / ".emulator/avd/HermesApkLab_API34.avd/config.ini").is_file(),
             "max_upload_bytes": config()["max_upload_bytes"], "port": config()["port"]}

@@ -54,3 +54,9 @@ apk-lab build JOB
 An unchanged baseline is required first. Keep the original descriptor alongside
 its readable alias. Markers show execution; payload or wire-traffic claims need
 additional observations. Retest the cleaned final build.
+
+## Repeated native observations
+
+See [EXPERIMENTS.md](EXPERIMENTS.md) for a runnable JSON protocol example, native ELF
+preflight, bounded CPU emulation and captured-memory comparison. The examples use
+explicit researcher-selected inputs and contain no challenge-specific answers.

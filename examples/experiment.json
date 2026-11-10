@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "argv": ["python3", "analysis/probe.py"],
+  "files": ["analysis/probe.py"],
+  "timeout": 10,
+  "repeats": 2,
+  "assumptions": ["Protocol example; does not analyze the APK"],
+  "cases": [
+    {"id": "empty", "input": {"hex": ""}, "expected": 0},
+    {"id": "nonempty", "input": {"hex": "010203"}, "expected": 3}
+  ]
+}

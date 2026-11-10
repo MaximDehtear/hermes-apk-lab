@@ -71,3 +71,14 @@ verified patch needs a passed scenario for its exact hash; explicit no-testing
 choice is recorded as untested. Diagnostic builds must be cleaned before final
 completion. Static analysis, reconstructed pseudocode and model interpretations
 have the coverage limits documented in the skill.
+
+## Experiments
+
+`experiments.py` builds on the existing job operation lock, process-group command
+runner, original input integrity check, atomic JSON and event journal. Specs,
+per-case requests/responses and incremental reports live in `analysis/experiments`;
+command logs remain in `logs`. No new database or verdict system is introduced.
+Failures preserve partial coverage; comparison does not upgrade job verification.
+`capabilities.py` discovers the isolated optional interpreter. `native_probe.py`
+runs outside the controller so native emulator failures cannot crash its Python
+process. Research scripts remain job artifacts, not project-specific solutions.
